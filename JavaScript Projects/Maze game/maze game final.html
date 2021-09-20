@@ -1,0 +1,267 @@
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  
+  <style>
+      #mazeCanvas{
+          display: none;
+          margin-left:24%;   
+      }
+      
+      body{
+          background-color: cornflowerblue;
+      }
+      /* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: rgba(255, 255, 255, 0);
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  /*border: 1px solid #888;*/
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+  </style>
+</head>
+  <body id="body"> 
+    <div id="gradient"></div>
+    <div id="page">
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+            <div class="modal-content" style="text-align: center;">
+                <span class="close">&times;</span>
+                <p style="font-size: 50px;">Congrats You Won!!!</p>
+            </div>
+
+        </div>
+        
+      </div>
+      <div id="menu" style="margin-top: 10px;margin-bottom: 20px;">
+        <div class="custom-select" style="display: inline-block;margin-left:40%">
+          <select id="diffSelect" style="background-color: cornflowerblue;width: 100px;height: 40px;border: 2px solid;border-radius: 5px;">
+                    <option value="10">Easy</option>
+                    <option value="15">Medium</option>
+                    <option value="25">Hard</option>
+                    <option value="38">Extreme</option>                                      
+                </select>
+        </div>
+        <input id="startMazeBtn" type="button" value="Start" style="display: inline-block;background-color: cornflowerblue;width: 100px;height: 40px;
+        border: 2px solid;border-radius: 5px;">
+      </div>
+      
+     <canvas id="mazeCanvas" class="border" height="600" width="600"></canvas>
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.18/jquery.touchSwipe.min.js"></script>
+    <!--<script type="text/javascript" src="C:\Users\ASUS\Desktop\code\java projects\maze maker tutorial java.js"></script>-->
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        //var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        
+        
+        
+    document.getElementById("startMazeBtn").onclick=function(){
+            document.getElementById("mazeCanvas").style.display="block";
+            var c=document.getElementById("diffSelect").value;
+            
+            var disp=newMaze(c,c);
+        
+        var x=0;
+        var y=0;
+        var canvas=document.getElementById("mazeCanvas")
+        var context=canvas.getContext("2d");
+    
+    
+    
+    function makemaze(){
+        var canvas=document.getElementById("mazeCanvas")
+        var context=canvas.getContext("2d");
+        context.fillStyle = "cornflowerblue";
+        context.fillRect(0,0,600,600);
+        context.fillStyle = "black";
+        
+        for (var i = 0; i < disp.length; i++) {
+            for (var j = 0; j < disp[i].length; j++) {
+                if (disp[i][j][0] == 0) { context.fillRect((j*(600/c)),(i*(600/c)),(600/c),2); };
+                if (disp[i][j][1] == 0) { context.fillRect((j*(600/c) + (600/c) - 2),(i*(600/c)),2,(600/c)); };
+                if (disp[i][j][2] == 0) { context.fillRect((j*(600/c)),(i*(600/c) + (600/c) - 2),(600/c),2); };
+                if (disp[i][j][3] == 0) { context.fillRect((j*(600/c)),(i*(600/c)),2,(600/c)); };
+            }   
+        }
+        
+    }
+    makemaze();
+    var canvas=document.getElementById("mazeCanvas")
+    var context=canvas.getContext("2d");
+    context.fillStyle = "blue";
+    context.fillRect((x*(600/c)+2),(y*(600/c)+2),((600/c)-4),((600/c)-4));
+    context.fillStyle = "red";
+    context.fillRect(((c-1)*(600/c)+2),((c-1)*(600/c)+2),((600/c)-4),((600/c)-4));
+    document.onkeydown = function(event) {
+        if(x>=(c-2) && y>=(c-2)){
+            //alert("you have reached the end,congrats" );
+            modal.style.display = "block";
+
+        };
+        switch (event.keyCode) {
+           case 37:
+                //alert('Left key pressed');
+                if(disp[y][x][3] == 1){
+                    makemaze();
+                    x=x-1;
+                    context.fillStyle = "blue";
+                    context.fillRect((x*(600/c)+2),(y*(600/c)+2),((600/c)-4),((600/c)-4));
+                    context.fillStyle = "red";
+                    context.fillRect(((c-1)*(600/c)+2),((c-1)*(600/c)+2),((600/c)-4),((600/c)-4));
+                };
+              break;
+           case 38:
+                //alert('Up key pressed');
+                if(disp[y][x][0] == 1){
+                    makemaze();
+                    y=y-1;
+                    context.fillStyle = "blue";
+                    context.fillRect((x*(600/c)+2),(y*(600/c)+2),((600/c)-4),((600/c)-4));
+                    context.fillStyle = "red";
+                    context.fillRect(((c-1)*(600/c)+2),((c-1)*(600/c)+2),((600/c)-4),((600/c)-4));
+                }
+              break;
+           case 39:
+                //alert('Right key pressed');
+                if( disp[y][x][1] == 1){
+                    makemaze();
+                    x=x+1;
+                    context.fillStyle = "blue";
+                    context.fillRect((x*(600/c)+2),(y*(600/c)+2),((600/c)-4),((600/c)-4));
+                    context.fillStyle = "red";
+                    context.fillRect(((c-1)*(600/c)+2),((c-1)*(600/c)+2),((600/c)-4),((600/c)-4));
+                }
+              break;
+           case 40:
+                //alert('Down key pressed');
+                if(disp[y][x][2] == 1){
+                    makemaze();
+                    y=y+1;
+                    context.fillStyle = "blue";
+                    context.fillRect((x*(600/c)+2),(y*(600/c)+2),((600/c)-4),((600/c)-4));
+                    context.fillStyle = "red";
+                    context.fillRect(((c-1)*(600/c)+2),((c-1)*(600/c)+2),((600/c)-4),((600/c)-4));
+                }
+              break;
+        }
+    }; 
+    
+        };
+        
+        
+        function newMaze(x, y) {
+    // Establish variables and starting grid
+    var totalCells = x*y;
+    var cells = new Array();
+    var unvis = new Array();
+    for (var i = 0; i < y; i++) {
+        cells[i] = new Array();
+        unvis[i] = new Array();
+        for (var j = 0; j < x; j++) {
+            cells[i][j] = [0,0,0,0];//x cord y cord sizex size y for me ,else those are coordinates
+            unvis[i][j] = true;
+        }
+    }
+    
+    // Set a random position to start from
+    var currentCell = [Math.floor(Math.random()*y), Math.floor(Math.random()*x)];
+    var path = [currentCell];
+    unvis[currentCell[0]][currentCell[1]] = false;
+    var visited = 1;
+    
+    // Loop through all available cell positions
+    while (visited < totalCells) {
+        // Determine neighboring cells
+        var pot = [[currentCell[0]-1, currentCell[1], 0, 2],//top right bottom left
+                [currentCell[0], currentCell[1]+1, 1, 3],
+                [currentCell[0]+1, currentCell[1], 2, 0],
+                [currentCell[0], currentCell[1]-1, 3, 1]];
+        var neighbors = new Array();
+        
+        // Determine if each neighboring cell is in game grid, and whether it has already been checked
+        for (var l = 0; l < 4; l++) {
+            if (pot[l][0] > -1 && pot[l][0] < y && pot[l][1] > -1 && pot[l][1] < x && unvis[pot[l][0]][pot[l][1]]) 
+            { neighbors.push(pot[l]); }
+        }
+        
+        // If at least one active neighboring cell has been found
+        if (neighbors.length) {
+            // Choose one of the neighbors at random
+            next = neighbors[Math.floor(Math.random()*neighbors.length)];
+            
+            // Remove the wall between the current cell and the chosen neighboring cell
+            cells[currentCell[0]][currentCell[1]][next[2]] = 1;
+            cells[next[0]][next[1]][next[3]] = 1;
+            
+            // Mark the neighbor as visited, and set it as the current cell
+            unvis[next[0]][next[1]] = false;
+            visited++;
+            currentCell = [next[0], next[1]];
+            path.push(currentCell);
+        }
+        // Otherwise go back up a step and keep going
+        else {
+            currentCell = path.pop();
+        }
+    }
+    return cells;
+}   
+    </script>
+  </body>
+</html>

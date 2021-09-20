@@ -1,0 +1,118 @@
+<html>
+<head>
+    <title>Bouncing ball</title>
+    <link href="https://fonts.googleapis.com/css?family=Bungee|Bungee+Shade|Covered+By+Your+Grace" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:800" rel="stylesheet">
+    <style>    
+    </style>
+</head>
+<body style="background-color: rgb(56,220, 250);overflow:hidden;" >
+    <canvas id="canvas" ></canvas>
+<script>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+var tx = window.innerWidth;
+var ty = window.innerHeight ;
+canvas.width = tx;
+canvas.height = ty;
+function randomx(){
+    var xcoordinate =Math.floor(Math.random() * tx) - 50 ; 
+    return xcoordinate;
+}
+function randomy(){
+    var ycoordinate =Math.floor(Math.random() * ty) - 50; 
+    return ycoordinate;
+}
+function randomvx(){
+    var xspeed =Math.round((Math.random() - 0.5) * 10); 
+    return xspeed;
+}
+function randomradius(){
+    var radius =Math.random() * 20 + 14 
+    return radius;
+}
+function randomcolor(){
+    var colour = "rgba(" +
+    (Math.round(Math.random() * 250) ) +
+    "," +
+    (Math.round(Math.random() * 250) ) +
+    "," +
+    (Math.round(Math.random() * 250) ) +
+    "," +
+    Math.ceil(Math.random() / 10 )+
+    ")"
+    return colour;
+}
+var mousex=0;
+var mousey=0;
+addEventListener("mousemove", function() {
+  mousex = event.clientX;
+  mousey = event.clientY;
+});
+class ball{
+     constructor(){
+        this.x= 0;
+        this.y=0;
+        this.vx=0;
+        this.vy=0;
+        this.gravity=0.005;
+        this.gravityspeed=0;
+        this.bounce=0.99;
+        this.startradius= 0;
+        this.radius=0;
+        this.color= '';
+        this.draw= function() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.startradius, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        };
+    }
+}
+var arrayball= [];
+for (var i=0;i<100;i++){
+    arrayball[i]= new ball;
+}
+for  (var i=0;i<100;i++){
+    arrayball[i].x=randomx();
+    arrayball[i].y=randomy();
+    arrayball[i].vx=randomvx();
+    arrayball[i].startradius=randomradius();
+    arrayball[i].radius=arrayball[i].startradius;
+    arrayball[i].color=randomcolor();
+}
+setInterval(draw,0.02);
+function draw() {
+  ctx.clearRect(0,0, canvas.width, canvas.height);
+  for  (var a=0;a<100;a++){
+    
+    arrayball[a].draw();
+    arrayball[a].gravityspeed += arrayball[a].gravity;
+    arrayball[a].x += arrayball[a].vx;
+    arrayball[a].y += arrayball[a].vy + arrayball[a].gravityspeed;
+    if (arrayball[a].y + arrayball[a].vy > canvas.height || arrayball[a].y +arrayball[a].vy < 0) {
+        
+        arrayball[a].y = canvas.height - (arrayball[a].startradius);
+        arrayball[a].gravityspeed = (-1)* (arrayball[a].gravityspeed *arrayball[a].bounce);
+    }
+    if (arrayball[a].x + arrayball[a].vx > canvas.width || arrayball[a].x + arrayball[a].vx < 0) {
+        arrayball[a].vx = -arrayball[a].vx;
+    }
+    if(mousex > arrayball[a].x - 20 && 
+      mousex < arrayball[a].x + 20 &&
+      mousey > arrayball[a].y - 50 &&
+      mousey < arrayball[a].y + 50 &&
+      arrayball[a].startradius < 75){
+        
+        arrayball[a].startradius +=10; 
+      } else {
+        if(arrayball[a].startradius > arrayball[a].radius){
+            arrayball[a].startradius += -10;
+        }
+      }
+  }  
+}
+</script>
+</body>
+</html>

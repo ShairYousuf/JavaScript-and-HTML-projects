@@ -1,0 +1,171 @@
+<html>
+<head>
+    <title>Infinity sign</title>
+    
+    <style>    
+    </style>
+</head>
+<body style="background-color: black;overflow:hidden;" >
+    <canvas id="canvas" ></canvas>
+<script>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+var tx = window.innerWidth;
+var ty = window.innerHeight ;
+canvas.width = tx;
+canvas.height = ty;
+class ball{
+     constructor(){
+        this.x= 0;
+        this.y=0;
+        //this.vx=Math.cos(1)*50;
+        //this.vy=Math.sin(1)*50;
+        //this.gravity=0.005;
+        //this.gravityspeed=0;
+        //this.bounce=0.99;
+        //this.startradius= 0;
+        this.radius=5;
+        this.degree= 0;
+        this.start=false;
+        this.end=false;
+        this.color= "blue";
+        this.draw= function() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        };
+    }
+}
+var balls = [];
+var balls2 =[];
+for(var i=0;i<100;i++){
+    balls[i]= new ball;
+    balls2[i]= new ball;
+}
+//setInterval(draw2,100);
+setInterval(draw1,10);
+//setInterval(clear,100);
+function clear(){
+    ctx.clearRect(0,0, canvas.width, canvas.height);
+}
+var count =0;
+function draw1(){
+    ctx.clearRect(0,0, canvas.width, canvas.height);
+    count +=1;
+    for (var i=0;i<100;i++){
+        if (i<=count && balls[i].end!=true){
+            balls[i].draw();
+            balls[i].color="hsl(" +
+            (i * 2.55 ) +
+            "," +
+            "100%" +
+            "," +
+            "50%" +
+            
+            ")";
+            balls[i].degree += (Math.PI/180) * 4 ;
+            balls[i].x = 300 + 200 + Math.cos(balls[i].degree)*200;
+            balls[i].y = 300 + Math.sin(balls[i].degree)*200;
+        }
+        if(balls[i].degree >= 2 * Math.PI ){
+            balls[i].end=true;
+            
+        }
+        
+    }
+    /*if(balls[99].end==true){
+            count=0;
+            for (var i=0;i<100;i++){
+                balls[i].end=false;
+                balls[i].degree=0;
+            }
+        }*/
+    for (var i=0;i<100;i++){
+        if (i<=count && balls2[i].end!=true){
+            balls2[i].draw();
+            balls2[i].color="hsl(" +
+            (i * 2.55 ) +
+            "," +
+            "100%" +
+            "," +
+            "50%" +
+            
+            ")";
+            balls2[i].degree -= (Math.PI/180) * 4 ;
+            balls2[i].x = 1100 - 200 +  (-1) * Math.cos(balls2[i].degree) *200;
+            balls2[i].y = 300 + Math.sin(balls2[i].degree) *200 ;
+        }
+        if(balls2[i].degree <= (-2) * Math.PI ){
+            balls2[i].end=true;
+            
+        }
+        
+    }
+    if(balls2[99].end==true && balls[99].end==true ){
+            count=0;
+            for (var i=0;i<100;i++){
+                balls2[i].end=false;
+                balls2[i].degree=0;
+                balls[i].end=false;
+                balls[i].degree=0;
+
+            }
+        }
+}
+function draw2(){
+    //ctx.clearRect(0,0, canvas.width, canvas.height);
+    count +=1;
+    for (var i=0;i<100;i++){
+        if (i<=count && balls2[i].end!=true){
+            balls2[i].draw();
+            balls2[i].color="hsl(" +
+            (i * 2.55 ) +
+            "," +
+            "100%" +
+            "," +
+            "50%" +
+            
+            ")";
+            balls2[i].degree -= (Math.PI/180) * 4 ;
+            balls2[i].x = 1100 - 200 +  (-1) * Math.cos(balls2[i].degree) *200;
+            balls2[i].y = 300 + Math.sin(balls2[i].degree) *200 ;
+        }
+        if(balls2[i].degree <= (-2) * Math.PI ){
+            balls2[i].end=true;
+            
+        }
+        
+    }
+    if(balls2[99].end==true){
+            count=0;
+            for (var i=0;i<100;i++){
+                balls2[i].end=false;
+                balls2[i].degree=0;
+            }
+        }
+    //ball1.draw();
+   /// ball1.degree += Math.PI/180;
+    //ball1.x = 200 + 100 + Math.cos(ball1.degree)*100;
+    //ball1.y = 200 + Math.sin(ball1.degree)*100;
+    /*if (ball1.y + ball1.vy > 150|| ball1.y + ball1.vy < 50) {
+        
+        //arrayball[a].y = canvas.height - (arrayball[a].startradius);
+        //arrayball[a].gravityspeed = (-1)* (arrayball[a].gravityspeed *arrayball[a].bounce);
+        ball1.vy = (-1) * ball1.vy;
+    }
+    //if (arrayball[a].x + arrayball[a].vx > canvas.width || arrayball[a].x + arrayball[a].vx < 0) {
+        //arrayball[a].vx = -arrayball[a].vx;
+    //}
+    if (ball1.x + ball1.vx > 200|| ball1.x + ball1.vx < 100) {
+        
+        //arrayball[a].y = canvas.height - (arrayball[a].startradius);
+        //arrayball[a].gravityspeed = (-1)* (arrayball[a].gravityspeed *arrayball[a].bounce);
+        ball1.vx = (-1) * ball1.vx;
+    }*/
+}
+</script>
+</body>
+</html>
+
